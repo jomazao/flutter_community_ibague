@@ -1,4 +1,4 @@
-package flutter.community.ibague.flutter_community_ibague
+package co.fluttercommunityibague
 
 import io.flutter.embedding.android.FlutterActivity
 
