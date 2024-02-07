@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "802320953608",
+    "project_id": "flutter-community-ibague",
+    "storage_bucket": "flutter-community-ibague.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802320953608:android:4011820edbcde49afebcbd",
+        "android_client_info": {
+          "package_name": "flutter.community.ibague.flutter_community_ibague"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-4Rf591Uo2A0tjIXBAOrTYN96ATkCkWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
