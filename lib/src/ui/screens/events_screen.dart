@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_community_ibague/src/config/app_assets.dart';
+import 'package:flutter_community_ibague/src/notifiers/event_notifier.dart';
 import 'package:flutter_community_ibague/src/notifiers/events_notifier.dart';
 import 'package:flutter_community_ibague/src/ui/widgets/event_widget.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,11 @@ class EventsScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ...state.events.map((event) => EventWidget(event: event)).toList()
+              ...state.events
+                  .map((event) => ChangeNotifierProvider(
+                      create: (_) => EventNotifier(eventId: event.id),
+                      child: EventWidget(event: event)))
+                  .toList()
             ],
           ),
         ),

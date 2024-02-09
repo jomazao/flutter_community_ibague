@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_community_ibague/firebase_options.dart';
+import 'package:flutter_community_ibague/src/config/es.dart';
 import 'package:flutter_community_ibague/src/config/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -10,6 +14,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseUIAuth.configureProviders([
+    EmailAuthProvider(),
+    GoogleProvider(
+        clientId:
+            '802320953608-0vkf65o9k90ea1d6g2nsk0ggb0hmq5pr.apps.googleusercontent.com'),
+  ]);
   runApp(const MyApp());
 }
 
@@ -40,6 +50,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      localizationsDelegates: [
+        FirebaseUILocalizations.withDefaultOverrides(const EsLocalizations()),
+      ],
       routerConfig: appRouter,
     );
   }

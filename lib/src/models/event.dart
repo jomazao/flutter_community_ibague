@@ -7,6 +7,7 @@ class Event {
   final String banner;
   final DateTime dateTime;
   final String location;
+  int attendees = 0;
 
   Event({
     required this.id,

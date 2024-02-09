@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_community_ibague/src/config/router.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
+enum HomePage { events, person }
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
-    required this.page,
+    required this.child,
   });
 
-  final Widget page;
+  final Widget child;
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: page,
+        child: widget.child,
       )),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          if (index == 0) {
+            context.go(Routes.events);
+            setState(() {
+              currentIndex = 0;
+            });
+          } else {
+            context.go(Routes.person);
+            setState(() {
+              currentIndex = 1;
+            });
+          }
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.event),

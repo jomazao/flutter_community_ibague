@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB-4Rf591Uo2A0tjIXBAOrTYN96ATkCkWU',
-    appId: '1:802320953608:android:4011820edbcde49afebcbd',
+    appId: '1:802320953608:android:bc21061c169563d4febcbd',
     messagingSenderId: '802320953608',
     projectId: 'flutter-community-ibague',
     storageBucket: 'flutter-community-ibague.appspot.com',
@@ -70,6 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '802320953608',
     projectId: 'flutter-community-ibague',
     storageBucket: 'flutter-community-ibague.appspot.com',
+    androidClientId: '802320953608-0vkf65o9k90ea1d6g2nsk0ggb0hmq5pr.apps.googleusercontent.com',
+    iosClientId: '802320953608-ro8a2l53lj9ag4nke1p0jsb7ojr2mea4.apps.googleusercontent.com',
     iosBundleId: 'flutter.community.ibague.flutterCommunityIbague',
   );
 }

@@ -16,7 +16,11 @@ class EventsNotifier extends ChangeNotifier {
   List<Event> events = [];
 
   void init() {
-    _eventsSubscription = _eventsRepository.eventsStream().listen((events) {
+    _eventsSubscription =
+        _eventsRepository.eventsStream().listen((events) async {
+      for (final event in events) {
+        event.attendees = await _eventsRepository.attendeesCount(event.id);
+      }
       this.events = events;
       notifyListeners();
     });
