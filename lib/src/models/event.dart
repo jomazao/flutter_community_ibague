@@ -7,6 +7,7 @@ class Event {
   final String banner;
   final DateTime dateTime;
   final String location;
+  final String recommendations;
   int attendees = 0;
 
   Event({
@@ -16,6 +17,7 @@ class Event {
     required this.banner,
     required this.dateTime,
     required this.location,
+    required this.recommendations,
   });
 
   factory Event.fromJson({
@@ -31,6 +33,7 @@ class Event {
       banner: json['banner'] ?? '',
       dateTime: dateTimeTimeStamp.toDate(),
       location: json['location'] ?? '',
+      recommendations: json['recommendations'] ?? '',
     );
   }
 }
