@@ -4,6 +4,7 @@ import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_community_ibague/firebase_options.dart';
+import 'package:flutter_community_ibague/src/config/app_colors.dart';
 import 'package:flutter_community_ibague/src/config/es.dart';
 import 'package:flutter_community_ibague/src/config/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
       ),
       localizationsDelegates: [
