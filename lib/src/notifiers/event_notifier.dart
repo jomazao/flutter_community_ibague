@@ -20,11 +20,9 @@ class EventNotifier extends ChangeNotifier {
     FirebaseAuth? auth,
   })  : _eventsRepository = eventsRepository ?? EventsRepository(),
         _auth = auth ?? FirebaseAuth.instance {
-    print('listen to event');
     _eventSubscription =
         _eventsRepository.eventStream(id: event.id).listen((event) {
-      print(event);
-      event = event;
+      this.event = event;
       notifyListeners();
     });
   }

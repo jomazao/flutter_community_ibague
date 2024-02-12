@@ -6,5 +6,5 @@ class AppColors {
   static const primaryFont = Color(0xFF3F38DD);
   static const flutterNavy = Color(0xFF042B59);
 
-  static const cancel = Color(0xFF042B59);
+  static const cancel = Color(0xFFEB5757);
 }

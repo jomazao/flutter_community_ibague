@@ -225,7 +225,7 @@ class EventDetailScreen extends StatelessWidget {
                   }
                 },
                 child: Text(
-                  notifier.attending ? 'Desistir' : 'Asistir',
+                  notifier.attending ? 'Cancelar Asistencia' : 'Asistir',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: bigScreen ? 26 : 18,
