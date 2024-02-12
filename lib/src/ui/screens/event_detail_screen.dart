@@ -221,7 +221,9 @@ class EventDetailScreen extends StatelessWidget {
 
                     if (logged) {
                       notifier.attendEvent();
-                    } else {}
+                    }
+                  } else {
+                    notifier.attendEvent();
                   }
                 },
                 child: Text(
