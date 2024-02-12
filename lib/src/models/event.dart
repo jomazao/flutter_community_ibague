@@ -6,9 +6,15 @@ class Event {
   final String description;
   final String banner;
   final DateTime dateTime;
-  final String location;
+  final String locationTitle;
   final String recommendations;
-  int attendees = 0;
+  final String locationDetails;
+  final GeoPoint location;
+  final String calendarUrl;
+  final String locationUrl;
+  final List<String> attendees;
+
+  int get attendeesCount => attendees.length;
 
   Event({
     required this.id,
@@ -18,6 +24,11 @@ class Event {
     required this.dateTime,
     required this.location,
     required this.recommendations,
+    required this.locationDetails,
+    required this.locationTitle,
+    required this.calendarUrl,
+    required this.locationUrl,
+    required this.attendees,
   });
 
   factory Event.fromJson({
@@ -26,6 +37,13 @@ class Event {
   }) {
     final dateTimeTimeStamp = json['dateTime'] as Timestamp;
 
+    final recommendations =
+        (json['recommendations'] as String ?? '').replaceAll("\\n", "\n");
+
+    final attendees = (json['attendees'] as List<dynamic>? ?? [])
+        .map<String>((uid) => '$uid')
+        .toList();
+
     return Event(
       id: id,
       title: json['title'] ?? '',
@@ -33,7 +51,12 @@ class Event {
       banner: json['banner'] ?? '',
       dateTime: dateTimeTimeStamp.toDate(),
       location: json['location'] ?? '',
-      recommendations: json['recommendations'] ?? '',
+      locationTitle: json['location_title'] ?? '',
+      locationDetails: json['location_details'] ?? '',
+      locationUrl: json['location_url'] ?? '',
+      calendarUrl: json['calendar_url'] ?? '',
+      recommendations: recommendations,
+      attendees: attendees,
     );
   }
 }

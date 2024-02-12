@@ -18,11 +18,14 @@ class EventsNotifier extends ChangeNotifier {
   void init() {
     _eventsSubscription =
         _eventsRepository.eventsStream().listen((events) async {
-      for (final event in events) {
-        event.attendees = await _eventsRepository.attendeesCount(event.id);
-      }
       this.events = events;
       notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    _eventsSubscription.cancel();
+    super.dispose();
   }
 }

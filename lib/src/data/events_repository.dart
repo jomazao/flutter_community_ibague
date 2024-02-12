@@ -22,41 +22,26 @@ class EventsRepository {
             .toList());
   }
 
-  Future<int> attendeesCount(String eventId) async {
-    final result = await _firestore
+  Stream<Event> eventStream({required String id}) {
+    return _firestore
         .collection('events')
-        .doc(eventId)
-        .collection('attendees')
-        .count()
-        .get();
-    return result.count ?? 0;
+        .doc(id)
+        .snapshots()
+        .map((doc) => Event.fromJson(
+              id: doc.id,
+              json: doc.data() ?? {},
+            ));
   }
 
   Future<void> attendToEvent(String eventId, String uid) async {
-    await _firestore
-        .collection('events')
-        .doc(eventId)
-        .collection('attendees')
-        .doc(uid)
-        .set({'attend': true});
+    await _firestore.collection('events').doc(eventId).update({
+      'attendees': FieldValue.arrayUnion([uid])
+    });
   }
 
   Future<void> notAttendToEvent(String eventId, String uid) async {
-    await _firestore
-        .collection('events')
-        .doc(eventId)
-        .collection('attendees')
-        .doc(uid)
-        .delete();
-  }
-
-  Stream<bool> attendStream(String eventId, String uid) {
-    return _firestore
-        .collection('events')
-        .doc(eventId)
-        .collection('attendees')
-        .doc(uid)
-        .snapshots()
-        .map((doc) => doc.exists);
+    await _firestore.collection('events').doc(eventId).update({
+      'attendees': FieldValue.arrayRemove([uid])
+    });
   }
 }

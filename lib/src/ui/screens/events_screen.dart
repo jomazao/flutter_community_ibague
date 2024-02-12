@@ -11,15 +11,22 @@ class EventsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<EventsNotifier>();
     final bigScreen = MediaQuery.sizeOf(context).width > 1000;
+    final widthScreen = MediaQuery.sizeOf(context).width;
     return ListView(
       children: [
         // Image.asset(AppAssets.banner),
-        Text(
-          'Próximos eventos',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: bigScreen ? 30 : 20,
-            fontWeight: FontWeight.bold,
+        Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: bigScreen ? widthScreen * 0.3 : widthScreen * 0.8,
+            child: Text(
+              'Próximos eventos',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: bigScreen ? 30 : 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
         const SizedBox(
@@ -29,24 +36,8 @@ class EventsScreen extends StatelessWidget {
           ...state.events
               .map(
                 (event) => ChangeNotifierProvider(
-                  create: (_) => EventNotifier(eventId: event.id),
-                  child: EventWidget(event: event),
-                ),
-              )
-              .toList(),
-          ...state.events
-              .map(
-                (event) => ChangeNotifierProvider(
-                  create: (_) => EventNotifier(eventId: event.id),
-                  child: EventWidget(event: event),
-                ),
-              )
-              .toList(),
-          ...state.events
-              .map(
-                (event) => ChangeNotifierProvider(
-                  create: (_) => EventNotifier(eventId: event.id),
-                  child: EventWidget(event: event),
+                  create: (_) => EventNotifier(event: event),
+                  child: EventWidget(),
                 ),
               )
               .toList(),
