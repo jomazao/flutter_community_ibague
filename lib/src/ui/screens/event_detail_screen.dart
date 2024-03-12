@@ -286,7 +286,6 @@ class EventDetailScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (bigScreen) const Spacer(flex: 2),
                     ],
                   )
                 ],
