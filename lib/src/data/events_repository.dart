@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_community_ibague/src/config/firebase_consts.dart';
 import 'package:flutter_community_ibague/src/models/event.dart';
 
 class EventsRepository {
@@ -10,7 +11,7 @@ class EventsRepository {
 
   Stream<List<Event>> eventsStream() {
     return _firestore
-        .collection('events')
+        .collection(FirebaseConsts.eventsCollection)
         .snapshots()
         .map((snapShot) => snapShot.docs
             .map(
@@ -24,7 +25,7 @@ class EventsRepository {
 
   Stream<Event> eventStream({required String id}) {
     return _firestore
-        .collection('events')
+        .collection(FirebaseConsts.eventsCollection)
         .doc(id)
         .snapshots()
         .map((doc) => Event.fromJson(
@@ -34,13 +35,19 @@ class EventsRepository {
   }
 
   Future<void> attendToEvent(String eventId, String uid) async {
-    await _firestore.collection('events').doc(eventId).update({
+    await _firestore
+        .collection(FirebaseConsts.eventsCollection)
+        .doc(eventId)
+        .update({
       'attendees': FieldValue.arrayUnion([uid])
     });
   }
 
   Future<void> notAttendToEvent(String eventId, String uid) async {
-    await _firestore.collection('events').doc(eventId).update({
+    await _firestore
+        .collection(FirebaseConsts.eventsCollection)
+        .doc(eventId)
+        .update({
       'attendees': FieldValue.arrayRemove([uid])
     });
   }

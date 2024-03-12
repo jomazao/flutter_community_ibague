@@ -27,10 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 1.0,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: widget.child,
-        ),
+        child: widget.child,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
