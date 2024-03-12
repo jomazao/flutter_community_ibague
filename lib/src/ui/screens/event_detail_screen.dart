@@ -189,7 +189,7 @@ class EventDetailScreen extends StatelessWidget {
                                           iconAsset: AppAssets.location,
                                           title:
                                               '+${event.attendeesCount} Asistirán',
-                                          subTitle: event.locationDetails,
+                                          subTitle: '',
                                           isBigScreen: bigScreen,
                                           onTap: () {},
                                           isIcon: true,
@@ -304,7 +304,7 @@ class EventDetailItem extends StatelessWidget {
   final String subTitle;
   final bool isBigScreen;
   final VoidCallback onTap;
-  final bool isIcon;
+  final bool isIcon; // todo(davila): do not use this
 
   const EventDetailItem({
     super.key,
@@ -321,50 +321,51 @@ class EventDetailItem extends StatelessWidget {
     return MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.only(
-              right: 10,
-              top: 10,
-              bottom: 10,
-            ),
-            child: isIcon
-                ? const Icon(
-                    Icons.people_outline_rounded,
-                    size: 30.0,
-                    color: Color.fromRGBO(86, 105, 255, 1),
-                  )
-                : Image.asset(
-                    iconAsset,
-                    height: 30,
-                    width: 30,
-                  ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          onTap: onTap,
+          child: Row(
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: isBigScreen ? 22 : 14,
-                  overflow: TextOverflow.ellipsis,
+              Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.only(
+                  right: 10,
+                  top: 10,
+                  bottom: 10,
                 ),
+                child: isIcon
+                    ? const Icon(
+                        Icons
+                            .people_outline_rounded, // todo(davila): change this logic
+                        size: 30.0,
+                        color: Color.fromRGBO(86, 105, 255, 1),
+                      )
+                    : Image.asset(
+                        iconAsset,
+                        height: 30,
+                        width: 30,
+                      ),
               ),
-              Text(
-                subTitle,
-                style: TextStyle(
-                  fontSize: isBigScreen ? 16 : 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: isBigScreen ? 22 : 14,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    subTitle,
+                    style: TextStyle(
+                      fontSize: isBigScreen ? 16 : 10,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }

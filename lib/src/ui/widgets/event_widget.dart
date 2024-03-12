@@ -21,7 +21,8 @@ class EventWidget extends StatelessWidget {
     final notifier = context.watch<EventNotifier>();
     final event = notifier.event;
     return MouseRegion(
-      cursor: SystemMouseCursors.click,
+      cursor:
+          isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
           !isDisabled ? context.push(Routes.eventDetails, extra: event) : null;
