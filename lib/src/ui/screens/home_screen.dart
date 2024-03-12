@@ -40,10 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               currentIndex = 0;
             });
-          } else {
+          } else if (index == 1) {
             context.go(Routes.person);
             setState(() {
               currentIndex = 1;
+            });
+          } else {
+            context.go(Routes.sponsors);
+            setState(() {
+              currentIndex = 2;
             });
           }
         },
@@ -55,6 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Perfil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.handshake),
+            label: 'Sponsors',
           ),
         ],
       ),

@@ -6,6 +6,7 @@ import 'package:flutter_community_ibague/src/ui/screens/event_detail_screen.dart
 import 'package:flutter_community_ibague/src/ui/screens/events_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/home_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/person_screen.dart';
+import 'package:flutter_community_ibague/src/ui/screens/sponsors_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class Routes {
   static const notLogged = '/not_logged';
   static const events = '/events';
   static const eventDetails = '/event-details';
+  static const sponsors = '/sponsors';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -63,6 +65,13 @@ final GoRouter appRouter = GoRouter(
                 path: Routes.person,
                 builder: (context, state) {
                   return const PersonScreen();
+                },
+              ),
+              GoRoute(
+                name: Routes.sponsors,
+                path: Routes.sponsors,
+                builder: (context, state) {
+                  return const SponsorsScreen();
                 },
               ),
             ],

@@ -5,7 +5,6 @@ import 'package:flutter_community_ibague/src/config/app_assets.dart';
 import 'package:flutter_community_ibague/src/config/app_colors.dart';
 import 'package:flutter_community_ibague/src/notifiers/auth_notifier.dart';
 import 'package:flutter_community_ibague/src/notifiers/event_notifier.dart';
-import 'package:flutter_community_ibague/src/ui/widgets/event_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,256 +41,320 @@ class EventDetailScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  constraints: BoxConstraints(maxHeight: bigScreen ? 300 : 200),
-                  alignment: Alignment.bottomCenter,
-                  color: AppColors.flutterNavy,
-                  child: CachedNetworkImage(
-                    imageUrl: event.banner,
-                  ),
-                ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: const <BoxShadow>[
-                              BoxShadow(
-                                color: Colors.black38,
-                                blurRadius: 10.0,
-                                offset: Offset(0.0, 5.0),
-                              )
-                            ]),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const AvatarStack(
-                              avatars: [Icon(Icons.people_outline_rounded)],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: widthScreen),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            event.title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: bigScreen ? 36 : 28,
                             ),
-                            const SizedBox(width: 5),
-                            Text(
-                              '+${event.attendeesCount} Asistirán',
-                              style: const TextStyle(
-                                color: AppColors.primaryFont,
-                                fontWeight: FontWeight.bold,
+                          ),
+                          ListTile(
+                            leading: const CircleAvatar(),
+                            title: Text(
+                              'Hosted By',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: bigScreen ? 18 : 12,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              event.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 36,
-                              ),
-                            ),
-                            _eventDetailItem(
-                                iconAsset: AppAssets.calendar,
-                                title: fechaFormateada,
-                                subTitle: '$diaSemana, $horaFormateada',
-                                isBigScreen: bigScreen,
-                                onTap: () {
-                                  final Uri uri = Uri.parse(event.calendarUrl);
-                                  launchUrl(uri);
-                                }),
-                            _eventDetailItem(
-                              iconAsset: AppAssets.location,
-                              title: event.locationTitle,
-                              subTitle: event.locationDetails,
-                              isBigScreen: bigScreen,
-                              onTap: () {
-                                final Uri uri = Uri.parse(event.locationUrl);
-                                launchUrl(uri);
-                              },
-                            ),
-                            Text(
-                              'Acerca del evento',
+                            subtitle: Text(
+                              'Camilo Cubillos y Jorge Lopez',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: bigScreen ? 22 : 16,
+                                fontSize: bigScreen ? 18 : 12,
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              event.description,
-                              style: TextStyle(fontSize: bigScreen ? 20 : 14),
-                            ),
-                            const SizedBox(height: 10),
-                            if (event.recommendations != '')
-                              Text(
-                                'Recomendaciones',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: bigScreen ? 22 : 16,
+                          ),
+                          const SizedBox(height: 25),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Wrap(
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: bigScreen ? widthScreen * 0.5 : widthScreen,
+                        ),
+                        child: Column(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  child: CachedNetworkImage(
+                                    imageUrl: event.banner,
+                                    fit: BoxFit.cover,
+                                    width: bigScreen
+                                        ? widthScreen * 0.6
+                                        : widthScreen,
+                                  ),
                                 ),
-                              ),
-                            const SizedBox(height: 10),
-                            Text(
-                              event.recommendations,
-                              style: TextStyle(fontSize: bigScreen ? 20 : 14),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Acerca del evento',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: bigScreen ? 22 : 16,
+                                  ),
+                                ),
+                                Text(
+                                  event.description,
+                                  textAlign: TextAlign.justify,
+                                  style:
+                                      TextStyle(fontSize: bigScreen ? 20 : 14),
+                                ),
+                                const SizedBox(height: 20),
+                                if (event.recommendations != '')
+                                  Text(
+                                    'Recomendaciones',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: bigScreen ? 22 : 16,
+                                    ),
+                                  ),
+                                Text(
+                                  event.recommendations,
+                                  style:
+                                      TextStyle(fontSize: bigScreen ? 20 : 14),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      notifier.attending ? AppColors.cancel : AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      vertical: bigScreen ? 20 : 15, horizontal: 100),
-                ),
-                onPressed: () async {
-                  final authNotifier = context.read<AuthNotifier>();
-                  if (notifier.attending) {
-                    notifier.notAttendEvent();
-                    return;
-                  }
-                  if (authNotifier.user == null) {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                              title: const Text('Inicia sesión'),
-                              content: const Text(
-                                  'Debes iniciar sesión para poder registrarte al evento',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  )),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(ctx);
-                                    },
-                                    child: const Text('Ok'))
-                              ],
-                            ));
-                    final logged = await showModalBottomSheet<bool>(
-                            context: context,
-                            builder: (ctx) {
-                              late final Widget child;
-
-                              child = SignInScreen(
-                                actions: [
-                                  AuthStateChangeAction<SignedIn>(
-                                      (context, state) {
-                                    Navigator.pop(ctx, true);
-                                  }),
-                                  AuthStateChangeAction<UserCreated>(
-                                      (context, state) {
-                                    Navigator.pop(ctx, true);
-                                  }),
+                      SizedBox(width: widthScreen * 0.1),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: bigScreen ? widthScreen * 0.3 : widthScreen,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Card(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0,
+                                      vertical: 12.0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        EventDetailItem(
+                                            iconAsset: AppAssets.calendar,
+                                            title: fechaFormateada,
+                                            subTitle:
+                                                '$diaSemana, $horaFormateada',
+                                            isBigScreen: bigScreen,
+                                            onTap: () {
+                                              final Uri uri =
+                                                  Uri.parse(event.calendarUrl);
+                                              launchUrl(uri);
+                                            }),
+                                        EventDetailItem(
+                                          iconAsset: AppAssets.location,
+                                          title: event.locationTitle,
+                                          subTitle: event.locationDetails,
+                                          isBigScreen: bigScreen,
+                                          onTap: () {
+                                            final Uri uri =
+                                                Uri.parse(event.locationUrl);
+                                            launchUrl(uri);
+                                          },
+                                        ),
+                                        EventDetailItem(
+                                          iconAsset: AppAssets.location,
+                                          title:
+                                              '+${event.attendeesCount} Asistirán',
+                                          subTitle: event.locationDetails,
+                                          isBigScreen: bigScreen,
+                                          onTap: () {
+                                            final Uri uri =
+                                                Uri.parse(event.locationUrl);
+                                            launchUrl(uri);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
-                              );
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: notifier.attending
+                                    ? AppColors.cancel
+                                    : AppColors.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: bigScreen ? 20 : 15,
+                                  horizontal: 100,
+                                ),
+                              ),
+                              onPressed: () async {
+                                final authNotifier =
+                                    context.read<AuthNotifier>();
+                                if (notifier.attending) {
+                                  notifier.notAttendEvent();
+                                  return;
+                                }
+                                if (authNotifier.user == null) {
+                                  await showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                            title: const Text('Inicia sesión'),
+                                            content: const Text(
+                                                'Debes iniciar sesión para poder registrarte al evento',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                )),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(ctx);
+                                                  },
+                                                  child: const Text('Ok'))
+                                            ],
+                                          ));
+                                  final logged =
+                                      await showModalBottomSheet<bool>(
+                                              context: context,
+                                              builder: (ctx) {
+                                                late final Widget child;
 
-                              return Scaffold(body: child);
-                            }) ??
-                        false;
+                                                child = SignInScreen(
+                                                  actions: [
+                                                    AuthStateChangeAction<
+                                                            SignedIn>(
+                                                        (context, state) {
+                                                      Navigator.pop(ctx, true);
+                                                    }),
+                                                    AuthStateChangeAction<
+                                                            UserCreated>(
+                                                        (context, state) {
+                                                      Navigator.pop(ctx, true);
+                                                    }),
+                                                  ],
+                                                );
 
-                    if (logged) {
-                      notifier.attendEvent();
-                    }
-                  } else {
-                    notifier.attendEvent();
-                  }
-                },
-                child: Text(
-                  notifier.attending ? 'Cancelar Asistencia' : 'Asistir',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: bigScreen ? 26 : 18,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                                                return Scaffold(body: child);
+                                              }) ??
+                                          false;
+
+                                  if (logged) {
+                                    notifier.attendEvent();
+                                  }
+                                } else {
+                                  notifier.attendEvent();
+                                }
+                              },
+                              child: Text(
+                                notifier.attending
+                                    ? 'Cancelar Asistencia'
+                                    : 'Asistir',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: bigScreen ? 26 : 18,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                            if (!bigScreen) const SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                      if (bigScreen) const Spacer(flex: 2),
+                    ],
+                  )
+                ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
 
-Widget _eventDetailItem({
-  required String iconAsset,
-  required String title,
-  required String subTitle,
-  required bool isBigScreen,
-  required VoidCallback onTap,
-}) {
-  return InkWell(
-    onTap: onTap,
-    child: Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(
-            right: 10,
-            top: 10,
-            bottom: 10,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.iconBackground,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Image.asset(
-            iconAsset,
-            height: 30,
-            width: 30,
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: isBigScreen ? 22 : 16,
-                overflow: TextOverflow.ellipsis,
-              ),
+class EventDetailItem extends StatelessWidget {
+  final String iconAsset;
+  final String title;
+  final String subTitle;
+  final bool isBigScreen;
+  final VoidCallback onTap;
+  const EventDetailItem({
+    super.key,
+    required this.iconAsset,
+    required this.title,
+    required this.subTitle,
+    required this.isBigScreen,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only(
+              right: 10,
+              top: 10,
+              bottom: 10,
             ),
-            Text(
-              subTitle,
-              style: TextStyle(
-                fontSize: isBigScreen ? 16 : 12,
-                overflow: TextOverflow.ellipsis,
-              ),
+            child: Image.asset(
+              iconAsset,
+              height: 30,
+              width: 30,
             ),
-          ],
-        ),
-      ],
-    ),
-  );
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: isBigScreen ? 22 : 14,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Text(
+                subTitle,
+                style: TextStyle(
+                  fontSize: isBigScreen ? 16 : 10,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
