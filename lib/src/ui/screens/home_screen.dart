@@ -61,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.person),
             label: 'Perfil',
           ),
-          BottomNavigationBarItem(
+          /* BottomNavigationBarItem(
             icon: Icon(Icons.handshake),
             label: 'Sponsors',
-          ),
+          ),*/
         ],
       ),
     );
