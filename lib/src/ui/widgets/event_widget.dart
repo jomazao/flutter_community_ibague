@@ -20,164 +20,167 @@ class EventWidget extends StatelessWidget {
     final widthScreen = MediaQuery.sizeOf(context).width;
     final notifier = context.watch<EventNotifier>();
     final event = notifier.event;
-    return GestureDetector(
-      onTap: () {
-        !isDisabled ? context.push(Routes.eventDetails, extra: event) : null;
-      },
-      child: Opacity(
-        opacity: !isDisabled ? 1.0 : 0.5,
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          width: bigScreen ? widthScreen * 0.3 : widthScreen * 0.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            shape: BoxShape.rectangle,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: event.banner,
-                    alignment: Alignment.center,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          !isDisabled ? context.push(Routes.eventDetails, extra: event) : null;
+        },
+        child: Opacity(
+          opacity: !isDisabled ? 1.0 : 0.5,
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            width: bigScreen ? widthScreen * 0.3 : widthScreen * 0.8,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: event.banner,
+                      alignment: Alignment.center,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          event.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: bigScreen ? 22 : 16,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            event.title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: bigScreen ? 22 : 16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // const AvatarStack(
-                        //   avatars: [
-                        //     CircleAvatar(
-                        //       backgroundImage:
-                        //           NetworkImage('https://via.placeholder.com/150'),
-                        //     ),
-                        //     CircleAvatar(
-                        //       backgroundImage:
-                        //           NetworkImage('https://via.placeholder.com/150'),
-                        //     ),
-                        //     CircleAvatar(
-                        //       backgroundImage:
-                        //           NetworkImage('https://via.placeholder.com/150'),
-                        //     ),
-                        //     CircleAvatar(
-                        //       backgroundImage:
-                        //           NetworkImage('https://via.placeholder.com/150'),
-                        //     ),
-                        //   ],
-                        // ),
-                        //  const SizedBox(width: 10),
-                        Text(
-                          '+${event.attendeesCount} Asistirán',
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryFont,
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // const AvatarStack(
+                          //   avatars: [
+                          //     CircleAvatar(
+                          //       backgroundImage:
+                          //           NetworkImage('https://via.placeholder.com/150'),
+                          //     ),
+                          //     CircleAvatar(
+                          //       backgroundImage:
+                          //           NetworkImage('https://via.placeholder.com/150'),
+                          //     ),
+                          //     CircleAvatar(
+                          //       backgroundImage:
+                          //           NetworkImage('https://via.placeholder.com/150'),
+                          //     ),
+                          //     CircleAvatar(
+                          //       backgroundImage:
+                          //           NetworkImage('https://via.placeholder.com/150'),
+                          //     ),
+                          //   ],
+                          // ),
+                          //  const SizedBox(width: 10),
+                          Text(
+                            '+${event.attendeesCount} Asistirán',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryFont,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_sharp,
-                          color: Colors.black45,
-                        ),
-                        Text(
-                          event.locationTitle,
-                          style: const TextStyle(
-                            fontSize: 15,
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_sharp,
                             color: Colors.black45,
                           ),
-                        ),
-                      ],
-                    ),
-                    // Consumer<AuthNotifier>(
-                    //   builder: (BuildContext context, AuthNotifier state,
-                    //       Widget? child) {
-                    //     final User? user = state.user;
-                    //     if ((user?.displayName?.length ?? 0) < 10) {
-                    //       return const Text(
-                    //         'Agrega tu nombre completo en tu perfil para asistir al evento',
-                    //         style: TextStyle(color: Colors.red),
-                    //       );
-                    //     } else {
-                    //       return StreamBuilder(
-                    //         stream: EventsRepository()
-                    //             .attendStream(event.id, user!.uid),
-                    //         builder: (BuildContext context,
-                    //             AsyncSnapshot<bool> snapshot) {
-                    //           if (snapshot.connectionState ==
-                    //               ConnectionState.done) {
-                    //             return const CircularProgressIndicator();
-                    //           } else {
-                    //             final attending = snapshot.data ?? false;
-                    //             final eventNotifier =
-                    //                 context.read<EventNotifier>();
-                    //             final uid = user.uid;
-                    //             if (attending) {
-                    //               return ElevatedButton(
-                    //                 onPressed: () =>
-                    //                     eventNotifier.notAttendEvent(uid),
-                    //                 child: const Row(
-                    //                   mainAxisSize: MainAxisSize.min,
-                    //                   children: [
-                    //                     Icon(Icons.cancel),
-                    //                     Text('Cancelar asistencia'),
-                    //                   ],
-                    //                 ),
-                    //               );
-                    //             } else {
-                    //               return ElevatedButton(
-                    //                 onPressed: () =>
-                    //                     eventNotifier.attendEvent(uid),
-                    //                 child: const Row(
-                    //                   mainAxisSize: MainAxisSize.min,
-                    //                   children: [
-                    //                     Icon(Icons.check),
-                    //                     Text(
-                    //                       'Confirmar asistencia',
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //               );
-                    //             }
-                    //           }
-                    //         },
-                    //       );
-                    //     }
-                    //   },
-                    // ),
-                  ],
+                          Text(
+                            event.locationTitle,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.black45,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // Consumer<AuthNotifier>(
+                      //   builder: (BuildContext context, AuthNotifier state,
+                      //       Widget? child) {
+                      //     final User? user = state.user;
+                      //     if ((user?.displayName?.length ?? 0) < 10) {
+                      //       return const Text(
+                      //         'Agrega tu nombre completo en tu perfil para asistir al evento',
+                      //         style: TextStyle(color: Colors.red),
+                      //       );
+                      //     } else {
+                      //       return StreamBuilder(
+                      //         stream: EventsRepository()
+                      //             .attendStream(event.id, user!.uid),
+                      //         builder: (BuildContext context,
+                      //             AsyncSnapshot<bool> snapshot) {
+                      //           if (snapshot.connectionState ==
+                      //               ConnectionState.done) {
+                      //             return const CircularProgressIndicator();
+                      //           } else {
+                      //             final attending = snapshot.data ?? false;
+                      //             final eventNotifier =
+                      //                 context.read<EventNotifier>();
+                      //             final uid = user.uid;
+                      //             if (attending) {
+                      //               return ElevatedButton(
+                      //                 onPressed: () =>
+                      //                     eventNotifier.notAttendEvent(uid),
+                      //                 child: const Row(
+                      //                   mainAxisSize: MainAxisSize.min,
+                      //                   children: [
+                      //                     Icon(Icons.cancel),
+                      //                     Text('Cancelar asistencia'),
+                      //                   ],
+                      //                 ),
+                      //               );
+                      //             } else {
+                      //               return ElevatedButton(
+                      //                 onPressed: () =>
+                      //                     eventNotifier.attendEvent(uid),
+                      //                 child: const Row(
+                      //                   mainAxisSize: MainAxisSize.min,
+                      //                   children: [
+                      //                     Icon(Icons.check),
+                      //                     Text(
+                      //                       'Confirmar asistencia',
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               );
+                      //             }
+                      //           }
+                      //         },
+                      //       );
+                      //     }
+                      //   },
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

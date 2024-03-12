@@ -315,44 +315,47 @@ class EventDetailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.only(
-              right: 10,
-              top: 10,
-              bottom: 10,
-            ),
-            child: Image.asset(
-              iconAsset,
-              height: 30,
-              width: 30,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: isBigScreen ? 22 : 14,
-                  overflow: TextOverflow.ellipsis,
-                ),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(
+                right: 10,
+                top: 10,
+                bottom: 10,
               ),
-              Text(
-                subTitle,
-                style: TextStyle(
-                  fontSize: isBigScreen ? 16 : 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              child: Image.asset(
+                iconAsset,
+                height: 30,
+                width: 30,
               ),
-            ],
-          ),
-        ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: isBigScreen ? 22 : 14,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  subTitle,
+                  style: TextStyle(
+                    fontSize: isBigScreen ? 16 : 10,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
