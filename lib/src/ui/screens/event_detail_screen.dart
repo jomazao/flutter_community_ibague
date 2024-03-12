@@ -161,16 +161,18 @@ class EventDetailScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         EventDetailItem(
-                                            iconAsset: AppAssets.calendar,
-                                            title: fechaFormateada,
-                                            subTitle:
-                                                '$diaSemana, $horaFormateada',
-                                            isBigScreen: bigScreen,
-                                            onTap: () {
-                                              final Uri uri =
-                                                  Uri.parse(event.calendarUrl);
-                                              launchUrl(uri);
-                                            }),
+                                          iconAsset: AppAssets.calendar,
+                                          title: fechaFormateada,
+                                          subTitle:
+                                              '$diaSemana, $horaFormateada',
+                                          isBigScreen: bigScreen,
+                                          onTap: () {
+                                            final Uri uri =
+                                                Uri.parse(event.calendarUrl);
+                                            launchUrl(uri);
+                                          },
+                                          isIcon: false,
+                                        ),
                                         EventDetailItem(
                                           iconAsset: AppAssets.location,
                                           title: event.locationTitle,
@@ -181,6 +183,7 @@ class EventDetailScreen extends StatelessWidget {
                                                 Uri.parse(event.locationUrl);
                                             launchUrl(uri);
                                           },
+                                          isIcon: false,
                                         ),
                                         EventDetailItem(
                                           iconAsset: AppAssets.location,
@@ -188,11 +191,8 @@ class EventDetailScreen extends StatelessWidget {
                                               '+${event.attendeesCount} Asistirán',
                                           subTitle: event.locationDetails,
                                           isBigScreen: bigScreen,
-                                          onTap: () {
-                                            final Uri uri =
-                                                Uri.parse(event.locationUrl);
-                                            launchUrl(uri);
-                                          },
+                                          onTap: () {},
+                                          isIcon: true,
                                         ),
                                       ],
                                     ),
@@ -304,6 +304,8 @@ class EventDetailItem extends StatelessWidget {
   final String subTitle;
   final bool isBigScreen;
   final VoidCallback onTap;
+  final bool isIcon;
+
   const EventDetailItem({
     super.key,
     required this.iconAsset,
@@ -311,6 +313,7 @@ class EventDetailItem extends StatelessWidget {
     required this.subTitle,
     required this.isBigScreen,
     required this.onTap,
+    required this.isIcon,
   });
 
   @override
@@ -326,11 +329,17 @@ class EventDetailItem extends StatelessWidget {
               top: 10,
               bottom: 10,
             ),
-            child: Image.asset(
-              iconAsset,
-              height: 30,
-              width: 30,
-            ),
+            child: isIcon
+                ? const Icon(
+                    Icons.people_outline_rounded,
+                    size: 30.0,
+                    color: Color.fromRGBO(86, 105, 255, 1),
+                  )
+                : Image.asset(
+                    iconAsset,
+                    height: 30,
+                    width: 30,
+                  ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
