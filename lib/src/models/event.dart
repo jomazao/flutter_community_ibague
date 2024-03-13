@@ -13,6 +13,7 @@ class Event {
   final String calendarUrl;
   final String locationUrl;
   final List<String> attendees;
+  final List<String> speakers;
 
   int get attendeesCount => attendees.length;
 
@@ -29,6 +30,7 @@ class Event {
     required this.calendarUrl,
     required this.locationUrl,
     required this.attendees,
+    required this.speakers,
   });
 
   factory Event.fromJson({
@@ -37,11 +39,14 @@ class Event {
   }) {
     final dateTimeTimeStamp = json['dateTime'] as Timestamp;
 
-    final recommendations =
-        (json['recommendations'] as String ?? '').replaceAll("\\n", "\n");
+    final recommendations = (json['recommendations']).replaceAll("\\n", "\n");
 
     final attendees = (json['attendees'] as List<dynamic>? ?? [])
         .map<String>((uid) => '$uid')
+        .toList();
+
+    final speakers = (json['speakers'] as List<dynamic>? ?? [])
+        .map<String>((name) => '$name')
         .toList();
 
     return Event(
@@ -57,6 +62,7 @@ class Event {
       calendarUrl: json['calendar_url'] ?? '',
       recommendations: recommendations,
       attendees: attendees,
+      speakers: speakers,
     );
   }
 }
