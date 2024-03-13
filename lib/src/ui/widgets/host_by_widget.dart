@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HostByWidget extends StatelessWidget {
-  final List<dynamic> speakers;
+  final List<String> speakers;
   final bool bigScreen;
 
   const HostByWidget({

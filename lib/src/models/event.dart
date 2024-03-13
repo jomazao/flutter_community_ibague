@@ -13,7 +13,7 @@ class Event {
   final String calendarUrl;
   final String locationUrl;
   final List<String> attendees;
-  final List<dynamic> speakers;
+  final List<String> speakers;
 
   int get attendeesCount => attendees.length;
 
@@ -45,6 +45,10 @@ class Event {
         .map<String>((uid) => '$uid')
         .toList();
 
+    final speakers = (json['speakers'] as List<dynamic>? ?? [])
+        .map<String>((name) => '$name')
+        .toList();
+
     return Event(
       id: id,
       title: json['title'] ?? '',
@@ -58,7 +62,7 @@ class Event {
       calendarUrl: json['calendar_url'] ?? '',
       recommendations: recommendations,
       attendees: attendees,
-      speakers: json['speakers'] ?? {},
+      speakers: speakers,
     );
   }
 }
