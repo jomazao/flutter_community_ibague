@@ -26,7 +26,7 @@ class EventDetailBodyWidget extends StatelessWidget {
     final event = notifier.event;
 
     // Convertir la fecha al formato deseado
-    DateTime fecha = DateTime.parse(event.dateTime.toString());
+    DateTime fecha = DateTime.parse(event!.dateTime.toString());
     String fechaFormateada = DateFormat('d MMMM, y', 'es').format(fecha);
     // Extraer la hora
     String horaFormateada = DateFormat('HH:mm').format(fecha);

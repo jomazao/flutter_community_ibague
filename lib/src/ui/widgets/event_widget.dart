@@ -44,7 +44,7 @@ class EventWidget extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl: event.banner,
+                      imageUrl: event!.banner,
                       alignment: Alignment.center,
                     ),
                   ),

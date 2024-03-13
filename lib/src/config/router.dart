@@ -42,8 +42,23 @@ final GoRouter appRouter = GoRouter(
             builder: (context, state) {
               final event = state.extra as Event;
               return ChangeNotifierProvider(
-                  create: (_) => EventNotifier(event: event),
-                  child: const EventDetailScreen());
+                create: (_) => EventNotifier(event: event, eventId: event.id),
+                child: const EventDetailScreen(),
+              );
+            },
+          ),
+          GoRoute(
+            name: '${Routes.eventDetails}/:id',
+            path: '${Routes.eventDetails}/:id',
+            // id 4aQUUtLzUyuDsEnstPPl
+            builder: (context, state) {
+              final eventId = state.pathParameters['id']!;
+              return ChangeNotifierProvider(
+                create: (_) => EventNotifier(
+                  eventId: eventId,
+                ),
+                child: const EventDetailScreen(),
+              );
             },
           ),
           ShellRoute(

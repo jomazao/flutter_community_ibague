@@ -8,20 +8,22 @@ import 'package:flutter_community_ibague/src/models/event.dart';
 class EventNotifier extends ChangeNotifier {
   final EventsRepository _eventsRepository;
   final FirebaseAuth _auth;
-
-  Event event;
-  bool get attending => event.attendees.any((uid) => uid == _user?.uid);
+  String eventId;
+  Event? event;
+  bool get attending =>
+      event != null ? event!.attendees.any((uid) => uid == _user?.uid) : false;
   late final StreamSubscription _eventSubscription;
   User? get _user => _auth.currentUser;
 
   EventNotifier({
-    required this.event,
+    required this.eventId,
+    Event? event,
     EventsRepository? eventsRepository,
     FirebaseAuth? auth,
   })  : _eventsRepository = eventsRepository ?? EventsRepository(),
         _auth = auth ?? FirebaseAuth.instance {
     _eventSubscription =
-        _eventsRepository.eventStream(id: event.id).listen((event) {
+        _eventsRepository.eventStream(id: eventId).listen((event) {
       this.event = event;
       notifyListeners();
     });
@@ -29,13 +31,13 @@ class EventNotifier extends ChangeNotifier {
 
   void attendEvent() {
     if (_user != null) {
-      _eventsRepository.attendToEvent(event.id, _user!.uid);
+      _eventsRepository.attendToEvent(event!.id, _user!.uid);
     }
   }
 
   void notAttendEvent() {
     if (_user != null) {
-      _eventsRepository.notAttendToEvent(event.id, _user!.uid);
+      _eventsRepository.notAttendToEvent(event!.id, _user!.uid);
     }
   }
 

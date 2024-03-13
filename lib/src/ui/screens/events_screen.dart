@@ -32,7 +32,7 @@ class EventsScreen extends StatelessWidget {
       ...state.events
           .map(
             (event) => ChangeNotifierProvider(
-              create: (_) => EventNotifier(event: event),
+              create: (_) => EventNotifier(eventId: event.id, event: event),
               child: isNewEvent
                   ? event.dateTime.isAfter(dateNow)
                       ? const EventWidget(isDisabled: false)

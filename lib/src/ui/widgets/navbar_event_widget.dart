@@ -26,7 +26,7 @@ class NavbarEventWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              event.title,
+              event!.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: bigScreen ? 36 : 28,
