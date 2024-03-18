@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_community_ibague/src/notifiers/event_notifier.dart';
 import 'package:flutter_community_ibague/src/notifiers/events_notifier.dart';
+import 'package:flutter_community_ibague/src/ui/widgets/carousel_slider_widget.dart';
 import 'package:flutter_community_ibague/src/ui/widgets/event_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ class EventsScreen extends StatelessWidget {
     final widthScreen = MediaQuery.sizeOf(context).width;
     return ListView(
       children: [
-        // Image.asset(AppAssets.banner),
+        CarouselSliderWidget(),
         _eventsText('Próximos eventos', bigScreen, widthScreen),
         const SizedBox(
           height: 10,

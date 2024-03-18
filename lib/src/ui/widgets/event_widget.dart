@@ -94,7 +94,9 @@ class EventWidget extends StatelessWidget {
                           // ),
                           //  const SizedBox(width: 10),
                           Text(
-                            '+${event.attendeesCount} Asistirán',
+                            isDisabled
+                                ? '+${event.attendeesCount} Asistieron'
+                                : '+${event.attendeesCount} Asistirán',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
