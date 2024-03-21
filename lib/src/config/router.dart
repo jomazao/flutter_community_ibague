@@ -5,7 +5,8 @@ import 'package:flutter_community_ibague/src/notifiers/events_notifier.dart';
 import 'package:flutter_community_ibague/src/ui/screens/event_detail_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/events_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/home_screen.dart';
-import 'package:flutter_community_ibague/src/ui/screens/person_screen.dart';
+import 'package:flutter_community_ibague/src/ui/screens/person_screen/person_notifier.dart';
+import 'package:flutter_community_ibague/src/ui/screens/person_screen/person_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/sponsors_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,9 @@ final GoRouter appRouter = GoRouter(
                 name: Routes.person,
                 path: Routes.person,
                 builder: (context, state) {
-                  return const PersonScreen();
+                  return ChangeNotifierProvider(
+                      create: (_) => PersonNotifier()..init(),
+                      child: const PersonScreen());
                 },
               ),
               GoRoute(

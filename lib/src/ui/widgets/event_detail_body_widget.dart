@@ -1,10 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_community_ibague/src/config/app_assets.dart';
 import 'package:flutter_community_ibague/src/config/app_colors.dart';
+import 'package:flutter_community_ibague/src/config/app_constants.dart';
+import 'package:flutter_community_ibague/src/models/member.dart';
 import 'package:flutter_community_ibague/src/notifiers/auth_notifier.dart';
 import 'package:flutter_community_ibague/src/notifiers/event_notifier.dart';
+import 'package:flutter_community_ibague/src/ui/fci_widgets/fci_editable_text_field/fci_editable_text_field.dart';
+import 'package:flutter_community_ibague/src/ui/utils/date_utils.dart';
+import 'package:flutter_community_ibague/src/ui/utils/dialogs.dart';
+import 'package:flutter_community_ibague/src/ui/utils/string_utils.dart';
 import 'package:flutter_community_ibague/src/ui/widgets/event_detail_item_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +31,7 @@ class EventDetailBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = context.watch<EventNotifier>();
     final event = notifier.event;
-
+    //TODO MOVE THESE LINES TO DATE UTILS
     // Convertir la fecha al formato deseado
     DateTime fecha = DateTime.parse(event.dateTime.toString());
     String fechaFormateada = DateFormat('d MMMM, y', 'es').format(fecha);
@@ -32,6 +39,8 @@ class EventDetailBodyWidget extends StatelessWidget {
     String horaFormateada = DateFormat('HH:mm').format(fecha);
     // Determinar el día de la semana
     String diaSemana = DateFormat('EEEE', 'es').format(fecha);
+
+    ///TODO until here
     return Wrap(
       children: [
         ConstrainedBox(
@@ -159,50 +168,18 @@ class EventDetailBodyWidget extends StatelessWidget {
                     return;
                   }
                   if (authNotifier.user == null) {
-                    await showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                              title: const Text('Inicia sesión'),
-                              content: const Text(
-                                  'Debes iniciar sesión para poder registrarte al evento',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  )),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(ctx);
-                                    },
-                                    child: const Text('Ok'))
-                              ],
-                            ));
-                    final logged = await showModalBottomSheet<bool>(
-                            context: context,
-                            builder: (ctx) {
-                              late final Widget child;
-
-                              child = SignInScreen(
-                                actions: [
-                                  AuthStateChangeAction<SignedIn>(
-                                      (context, state) {
-                                    Navigator.pop(ctx, true);
-                                  }),
-                                  AuthStateChangeAction<UserCreated>(
-                                      (context, state) {
-                                    Navigator.pop(ctx, true);
-                                  }),
-                                ],
-                              );
-
-                              return Scaffold(body: child);
-                            }) ??
-                        false;
-
-                    if (logged) {
-                      notifier.attendEvent();
-                    }
+                    await Dialogs.showDialogWithMessage(
+                      context,
+                      'Debes iniciar sesión para poder registrarte al evento',
+                      title: const Text('Inicia sesión'),
+                      showCancelBtn: false,
+                    );
+                    await _showDoLogin(context, notifier);
                   } else {
-                    notifier.attendEvent();
+                    _validateUserData(
+                      notifier,
+                      context,
+                    );
                   }
                 },
                 child: Text(
@@ -219,6 +196,146 @@ class EventDetailBodyWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _showDoLogin(
+    BuildContext context,
+    EventNotifier notifier,
+  ) async {
+    await showModalBottomSheet<bool>(
+      context: context,
+      builder: (ctx) {
+        final child = SignInScreen(
+          actions: [
+            AuthStateChangeAction<SignedIn>(
+              (context, state) async {
+                Navigator.pop(ctx, true);
+                await _validateUserData(
+                  notifier,
+                  context,
+                );
+              },
+            ),
+            AuthStateChangeAction<UserCreated>(
+              (_, state) async {
+                Navigator.pop(ctx, true);
+                await _validateUserData(
+                  notifier,
+                  context,
+                );
+              },
+            ),
+          ],
+        );
+        return Scaffold(body: child);
+      },
+    );
+  }
+
+  Future<void> _validateUserData(
+      EventNotifier notifier, BuildContext context) async {
+    Dialogs.showLoading(context);
+    final userResponse = await notifier.getCurrentUser();
+    Dialogs.close(context);
+    userResponse.when(
+      (user) {
+        if (user.hasAllInformationCompleted) {
+          notifier.attendEvent();
+        } else {
+          _showMissingDataDialog(user, context, notifier);
+        }
+      },
+      (error) {
+        Dialogs.showErrorDialogWithMessage(context, 'Ups hubo un error');
+      },
+    );
+  }
+
+  void _showMissingDataDialog(
+      Member user, BuildContext context, EventNotifier notifier) {
+    var userToUpdate = user.copyWith();
+    bool updateName = false;
+    Dialogs.showDialogWithContent(
+      context,
+      title: const Text('Completa tu perfil'),
+      Column(
+        children: [
+          const Text(
+              'Completa toda la informacion faltante de tu perfil para poder ir al evento'),
+          if (user.displayName.isEmpty)
+            FciEditableTextField(
+              labelText: 'Nombre completo',
+              hintText: 'Ingrese su nombre completo *',
+              errorText: 'Número de celular invalido',
+              minLength: 3,
+              content: user.displayName,
+              onDataSelected: (value) {
+                updateName = true;
+                userToUpdate = userToUpdate.copyWith(
+                  displayName: value,
+                );
+              },
+            ),
+          if (user.cellPhone.isEmpty)
+            FciEditableTextField(
+              labelText: 'Celular',
+              hintText: 'Ingrese su número de celular *',
+              errorText: 'Número de celular invalido',
+              maxLength: 10,
+              minLength: 10,
+              content: user.cellPhone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              onDataSelected: (value) {
+                userToUpdate = userToUpdate.copyWith(
+                  cellPhone: value,
+                );
+              },
+            ),
+          if (user.gender.isEmpty)
+            FciEditableTextField.selector(
+              labelText: 'Género',
+              hintText: 'Ingrese el genero con el que se identifica *',
+              options: AppConstants.genderList,
+              content: user.gender,
+              onDataSelected: (genderSelected) {
+                userToUpdate = userToUpdate.copyWith(
+                  gender: genderSelected,
+                );
+              },
+            ),
+          if (user.dateOfBirth == null)
+            FciEditableTextField.datePicker(
+              labelText: 'Edad',
+              hintText: 'Ingrese su edad *',
+              content: user.dateOfBirth?.dayMonthYear(),
+              onDataSelected: (dateSelected) {
+                userToUpdate = userToUpdate.copyWith(
+                  dateOfBirth: dateSelected.convertDMYToDate(),
+                );
+              },
+            ),
+        ],
+      ),
+      callBack: () async {
+        Dialogs.showLoading(context);
+        final userResponse = await notifier.updateMember(userToUpdate);
+        if (updateName) {
+          await notifier.updateName(userToUpdate);
+        }
+        Dialogs.close(context);
+        userResponse.when((member) {
+          if (member.hasAllInformationCompleted) {
+            notifier.attendEvent();
+          } else {
+            _showMissingDataDialog(member, context, notifier);
+          }
+        }, (error) {
+          Dialogs.showErrorDialogWithMessage(context, 'Ups hubo un error');
+        });
+      },
     );
   }
 }
