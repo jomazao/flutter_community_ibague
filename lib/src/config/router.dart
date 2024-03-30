@@ -6,6 +6,7 @@ import 'package:flutter_community_ibague/src/ui/screens/event_detail_screen.dart
 import 'package:flutter_community_ibague/src/ui/screens/events_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/home_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/person_screen.dart';
+import 'package:flutter_community_ibague/src/ui/screens/privacy_policy_screen.dart';
 import 'package:flutter_community_ibague/src/ui/screens/sponsors_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +17,19 @@ class Routes {
   static const events = '/events';
   static const eventDetails = '/event-details';
   static const sponsors = '/sponsors';
+  static const privacyPolicy = '/privacy-policy';
 }
 
 final GoRouter appRouter = GoRouter(
   initialLocation: Routes.events,
   routes: <RouteBase>[
+    GoRoute(
+      name: Routes.privacyPolicy,
+      path: Routes.privacyPolicy,
+      builder: (context, state) {
+        return const PrivacyPolicyScreen();
+      },
+    ),
     ShellRoute(
         builder: (context, state, child) {
           return MultiProvider(
